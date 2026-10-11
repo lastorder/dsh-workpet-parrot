@@ -1,6 +1,6 @@
 # AGENTS.md
 
-This file is for an AI agent (or a human contributor) changing this repository, and especially for walking through a release. [README.md](README.md) (Chinese) owns how to draw and develop the pet; this file owns *where a change goes* and *how to ship it*.
+This file is for an AI agent (or a human contributor) changing this repository, and especially for walking through a release. [README.md](README.md) (English) and [README.zh.md](README.zh.md) (中文) own how to draw and develop the pet; keep the two in sync in the same change; this file owns *where a change goes* and *how to ship it*.
 
 ## What this repository is
 

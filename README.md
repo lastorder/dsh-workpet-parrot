@@ -1,94 +1,96 @@
 # dsh-workpet-parrot
 
-给 DeepSeek Harness **工作宠物**（`dsh-workpet`）提供的玄凤鹦鹉形象。和 `dsh-workpet` 组合包装在同一个 profile 里后，到 **插件 → 工作宠物** 页面的形象下拉框里选 **玄凤鹦鹉** 即可。
+English | [中文](README.zh.md)
 
-本包**不需要编译，也不用 TypeScript**：DeepSeek Harness 原样加载 `client.js`。这个文件里绝大部分都是绘图代码，所以开发本包基本就是在画画。
+A cockatiel appearance for the DeepSeek Harness **Work Pet** (`dsh-workpet`). Install it in the same profile as the `dsh-workpet` bundle, then pick **Cockatiel** in the appearance dropdown on **Plugins → Work Pet**.
 
-## 文件
+This package has **no build step and no TypeScript**: DeepSeek Harness loads `client.js` exactly as written. Almost all of that file is drawing, so developing this package is mostly drawing.
 
-| 文件 | 作用 |
+## Files
+
+| File | Purpose |
 |---|---|
-| `client.js` | 浏览器运行的全部内容：图像、CSS 动画，以及一小段注册代码 |
-| `index.js` | 空的 Host 半侧；Loader 行需要一个能加载的模块 |
-| `cordis.patch.yml` | 安装组合包时插入 `dsh-workpet-parrot` 这一行 |
-| `package.json` | 组合包清单；`dsh.client.inject: ["dsh-workpet"]` 保证工作宠物先加载 |
-| `locale/*.json`、`icon.svg` | 插件管理页显示的名称、描述和图标 |
-| `test/smoke.test.mjs` | 可选的检查：每个状态都能正常画出来 |
-| `AGENTS.md`、`.github/` | 维护与发布说明、CI 和 npm 发布流水线 |
+| `client.js` | Everything the browser runs: the artwork, its CSS animations, and a short registration block |
+| `index.js` | Empty Host half; the Loader row needs a module to load |
+| `cordis.patch.yml` | Inserts the `dsh-workpet-parrot` row when the bundle is installed |
+| `package.json` | Bundle manifest; `dsh.client.inject: ["dsh-workpet"]` makes the Work Pet load first |
+| `locale/*.json`, `icon.svg` | Name, description, and icon shown in the Plugin Manager |
+| `test/smoke.test.mjs` | Optional check that every activity draws without errors |
+| `AGENTS.md`, `.github/` | Maintenance and release notes, CI, and the npm release pipeline |
 
-## 绘图原理
+## How the drawing works
 
-工作宠物决定宠物**在做什么**，本包只决定**看起来是什么样**。
+The Work Pet decides **what the pet is doing**; this package only decides **what that looks like**.
 
-1. 每次渲染时，工作宠物把一个 `scene` 交给 Figure。`scene.activity` 是下表 13 个值之一；`scene.tool`、`scene.awaiting` 带有细节，`scene.helpers` 是正在运行的子智能体数量。
-2. `client.js` 里的 `draw(scene, id, compact)` 选一个姿势，返回**纯 SVG 标记字符串**，画在 **100 × 80** 的画布里（`viewBox="0 0 100 80"`）。鸟站在树枝上，脚大约在 y = 68 处。
-3. `ParrotFigure` 把这段标记包进一个 `<svg>`。`compact` 为 true 时，这只鸟是缩小的「小伙伴」，阴影、风线这类背景就不用画了。
+1. For every render the Work Pet hands the Figure a `scene`. `scene.activity` is one of the 13 values in the table below; `scene.tool` and `scene.awaiting` carry details, and `scene.helpers` counts running subagents.
+2. `draw(scene, id, compact)` in `client.js` picks a pose and returns **plain SVG markup** for a **100 × 80** box (`viewBox="0 0 100 80"`). The bird stands on the branch with its feet at about y = 68.
+3. `ParrotFigure` wraps that markup in an `<svg>`. When `compact` is true, the bird is a small helper companion: skip scenery such as the shadow and wind lines.
 
-下面这些由工作宠物自己画，本包**不要**画：状态气泡、工具角标（💻 🔍 …）、子智能体小伙伴，以及爱心、星星、`z`、`!`、`?` 等特效。
+The Work Pet draws the rest itself, so do **not** draw any of these: the status bubble, the tool badge (💻 🔍 …), helper companions, and effects such as hearts, sparkles, `z`, `!`, and `?`.
 
-| `scene.activity` | 什么时候 | 鹦鹉姿势（`draw`） |
+| `scene.activity` | When | Cockatiel pose (`draw`) |
 |---|---|---|
-| `absent` | 没有打开会话 | `perched`：闭眼，冠羽放平 |
-| `idle` | 会话空闲 | `perched`：眨眼 |
-| `sleeping` | 空闲超过 70 秒 | `sleeping`：蓬成一团，头埋到背后 |
-| `thinking` | 模型在运行，还没有输出 | `perched`：歪头、眼睛向上，冠羽抖动 |
-| `writing` | 模型正在输出文字 | `typing`：啄笔记本电脑 |
-| `tool` | 正在调用工具 | `flying`：扇翅膀飞 |
-| `retrying` | 请求失败，等待重试 | `perched`：螺旋眼，摇晃 |
-| `awaiting` | 等你批准或回答 | `perched`：挥一只翅膀，冠羽竖起 |
-| `delegating` | 空闲但子智能体还在跑 | `perched`：东张西望 |
-| `done` | 刚完成 | `perched`：眯眼笑，跳一下 |
-| `error` | 刚出错 | `perched`：难过的眼睛、眼泪、发抖 |
-| `petted` | 被你点了一下 | `perched`：眯眼，脸颊更红 |
-| `dragged` | 正被你拖拽 | `dangling`：两只翅膀乱扑腾 |
+| `absent` | No session is open | `perched`: eyes closed, crest down |
+| `idle` | Session idle | `perched`: blinking |
+| `sleeping` | Idle for more than 70 s | `sleeping`: fluffed into a ball, head tucked back |
+| `thinking` | Model running, nothing written yet | `perched`: head tilted, eyes up, crest bobbing |
+| `writing` | Model streaming text | `typing`: pecking at a laptop |
+| `tool` | A tool call is running | `flying`: wings beating |
+| `retrying` | Waiting to retry a failed request | `perched`: spiral eyes, wobbling |
+| `awaiting` | Waiting for your approval or answer | `perched`: waving a wing, crest up |
+| `delegating` | Idle while subagents still run | `perched`: looking around |
+| `done` | Just finished | `perched`: happy eyes, hopping |
+| `error` | Just failed | `perched`: sad eyes, a tear, shaking |
+| `petted` | You clicked it | `perched`: eyes closed, cheeks glowing |
+| `dragged` | You are dragging it | `dangling`: both wings flapping |
 
-### `client.js` 里的积木
+### Building blocks in `client.js`
 
-- `P`：调色板。在这里改一个颜色，所有地方一起变。
-- `head(id, cx, cy, face)`：头部，半径 12.5，朝右。`face` 控制 `eyes`（`open`、`up`、`look`、`focus`、`happy`、`closed`、`wide`、`spiral`、`sad`）、`crest`（`up`、`mid`、`down`）、`tilt`（角度）、`beakOpen`、`blush`（`soft` 或 `strong`）、`tear`，以及 `crestMotion`（冠羽的动画 class）。
-- `body`、`tail`、`feet`、`foldedWing(x, y)`、`openWing(color)`、`perch(x1, x2, y)`，以及 `tube(d, color, width)`（带墨色描边的线条，用于腿、尾羽和冠羽）。
-- 姿势：`perched`、`flying`、`typing`、`sleeping`、`dangling`。
+- `P` — the palette. Change a colour here and it changes everywhere.
+- `head(id, cx, cy, face)` — the head, radius 12.5, facing right. `face` controls `eyes` (`open`, `up`, `look`, `focus`, `happy`, `closed`, `wide`, `spiral`, `sad`), `crest` (`up`, `mid`, `down`), `tilt` in degrees, `beakOpen`, `blush` (`soft` or `strong`), `tear`, and `crestMotion` (an animation class for the crest).
+- `body`, `tail`, `feet`, `foldedWing(x, y)`, `openWing(color)`, `perch(x1, x2, y)`, and `tube(d, color, width)` (a line with an ink outline, used for legs, tail feathers, and crest feathers).
+- Poses: `perched`, `flying`, `typing`, `sleeping`, `dangling`.
 
-### 动画规则
+### Animation rules
 
-- 动画用 `wpp-` 前缀的 CSS class，统一写在 `CSS` 字符串里：在标记里加 class（`class="wpp-flap"`），在 `CSS` 里加对应的 `@keyframes`。
-- SVG 里 CSS 旋转的支点是 `transform-origin`，单位是**画布坐标**：`style="transform-origin:46px 60px"`。不写时支点是本地的 `(0, 0)`。翅膀就利用了这一点：每只翅膀以 `(0, 0)` 为铰点画在一个 `translate(...)` 分组里，直接 `rotate()` 就是从肩膀扇动。
-- 不要把动画 class 放在同时带有 `transform="..."` 属性的元素上：CSS 的 transform 会覆盖这个属性。需要时多套一层 `<g>`。
-- 渐变 id 必须带上 `${id}`（例如 `url(#body-${id})`）：小伙伴会让页面上同时出现好几只鸟。
-- `CSS` 末尾的 `@media (prefers-reduced-motion: reduce)` 会为要求减少动画的用户停掉所有动画，请保留。
+- Animate with CSS classes prefixed `wpp-`, all defined in the `CSS` string: add the class in the markup (`class="wpp-flap"`) and its `@keyframes` in `CSS`.
+- In SVG, a CSS rotation pivots on `transform-origin` in **viewBox units**: `style="transform-origin:46px 60px"`. Without it, the pivot is the local `(0, 0)`. The wings rely on this: each wing is drawn hinged at `(0, 0)` inside a `translate(...)` group, so a plain `rotate()` flaps it from the shoulder.
+- Never put an animation class on an element that also has a `transform="..."` attribute, because the CSS transform replaces the attribute. Nest a `<g>` instead.
+- Gradient ids must include `${id}` (for example `url(#body-${id})`), because helper companions put several birds on the page at once.
+- The `@media (prefers-reduced-motion: reduce)` rule at the end of `CSS` stops all motion for users who ask for that. Keep it.
 
-## 开发流程
+## Development
 
-前提：profile 里已经装好 `dsh-workpet`。它提供 `ctx.workpet`；没有它，本插件不会激活。
+Prerequisite: `dsh-workpet` is installed in your profile. It provides `ctx.workpet`; without it this plugin stays inactive.
 
-1. **安装一次组合包**。在 DeepSeek Harness 会话里让智能体执行 `plugin_manager` 的 `install_bundle`，target 为本目录的绝对路径（桌面应用的 `desktop` profile 只能这样装）：
+1. **Install the bundle once.** In a DeepSeek Harness session, ask the agent to run `plugin_manager` `install_bundle` with this directory's absolute path as the target (the Desktop app's `desktop` profile can only be changed this way):
 
    ```text
    install_bundle  /absolute/path/to/dsh-workpet-parrot
    ```
 
-   发布到 npm 后，target 也可以直接写包名 `dsh-workpet-parrot`。CLI 管理的 profile 也可以执行：
+   Once the package is on npm, the target can also be the package name `dsh-workpet-parrot`. A CLI-managed profile can instead run:
 
    ```sh
    dsh plugin --profile <profile> add link:/absolute/path/to/dsh-workpet-parrot
    ```
 
-   `link:` 安装直接指向这个目录，之后修改不需要重新安装。
+   A `link:` install points at this folder, so later edits need no reinstall.
 
-2. **修改 `client.js`**：通常是某个姿势或头部的某个部件。
+2. **Edit `client.js`**, usually a pose or a part of the head.
 
-3. **检查**：
+3. **Check it**:
 
    ```sh
-   pnpm run check              # 语法检查，不需要安装依赖
-   pnpm install && pnpm test   # 可选：用 React 的服务端渲染把 13 个状态都画一遍
+   pnpm run check              # syntax check, no dependencies needed
+   pnpm install && pnpm test   # optional: draws all 13 activities with React's server renderer
    ```
 
-4. **看效果**：刷新 Harness 窗口，打开 **插件 → 工作宠物**，选择玄凤鹦鹉，然后切换 **预览动作**。预览可以随时显示任意状态，不用真的等会话睡着或出错。如果刷新后还是旧图，重启 DeepSeek Harness 让它重新加载文件。
+4. **Look at it**: refresh the Harness window, open **Plugins → Work Pet**, choose the cockatiel, and step through **Preview activity**. The preview shows any activity on demand, so you do not have to wait for a real session to fall asleep or fail. If the page still shows the old drawing after a refresh, restart DeepSeek Harness so it reloads the file.
 
-### 新增一个姿势
+### Adding a new pose
 
-1. 写一个返回 100 × 80 画布标记的函数，复用 `head`、`body`、`tube` 等部件：
+1. Write a function that returns markup for the 100 × 80 box, reusing `head`, `body`, `tube`, and the other parts:
 
    ```js
    const bathing = (id) => `
@@ -100,31 +102,31 @@
      </g>`
    ```
 
-2. 在 `CSS` 里加 `.wpp-splash{animation:…}` 和对应的 `@keyframes`。
-3. 在 `draw` 里对应的 `case` 返回它。
+2. Add `.wpp-splash{animation:…}` and its `@keyframes` to `CSS`.
+3. Return it from the matching `case` in `draw`.
 
-### 以本仓库为模板做新宠物
+### Using this repository as a template for a new pet
 
-1. 复制本仓库，改掉这些名字：`package.json` 的 `name`、`cordis.patch.yml` 里的行 `id`/`name`、`client.js` 开头 `window.__ModuleLoader__.load` 的 `id`（必须等于包名）、注册时的形象 `id`，以及 CSS 前缀 `wpp-`（避免与鹦鹉冲突）。
-2. 重画 `client.js` 第 1 部分（ARTWORK）和第 2 部分（ANIMATION），第 3 部分（PLUG-IN）只改名字和文案。
-3. 更新 `locale/*.json`、`icon.svg` 和本 README。
+1. Copy this repository and rename: `name` in `package.json`, the row `id`/`name` in `cordis.patch.yml`, the `id` passed to `window.__ModuleLoader__.load` at the top of `client.js` (it must equal the package name), the skin `id` in the registration, and the `wpp-` CSS prefix (so the two pets do not collide).
+2. Redraw part 1 (ARTWORK) and part 2 (ANIMATION) of `client.js`; in part 3 (PLUG-IN) change only names and text.
+3. Update `locale/*.json`, `icon.svg`, and both `README.md` and `README.zh.md`.
 
-### 发布到 npm
+### Publishing to npm
 
-发布流程（一次性的 Trusted Publisher 配置、打 tag、在 npm 上批准）见 [AGENTS.md](AGENTS.md)。简要步骤：改 `package.json` 的 `version` → `pnpm run verify` → 提交 `Release vX.Y.Z: …` → 推送 `vX.Y.Z` tag → GitHub Actions 把包放进 npm 待审队列 → 在 npmjs.com 批准。
+[AGENTS.md](AGENTS.md) describes the release procedure: the one-time Trusted Publisher setup, tagging, and approving on npm. In short: bump `version` in `package.json` → `pnpm run verify` → commit `Release vX.Y.Z: …` → push the `vX.Y.Z` tag → GitHub Actions stages the package on npm → approve it on npmjs.com.
 
-### 接口（供参考）
+### The interface, for reference
 
-注册代码在 `client.js` 最后一段，一般不用改。插件用 `inject: ['workpet', 'locale']` 等待能力出现，并在 `ctx.effect` 里注册，所以关闭组合包时鹦鹉会自动移除：
+Registration happens in the last block of `client.js` and rarely needs changes. The plugin waits for the capability with `inject: ['workpet', 'locale']` and registers inside `ctx.effect`, so switching the bundle off removes the cockatiel again:
 
 ```js
 ctx.effect(() => ctx.workpet.register({
-  id: 'cockatiel',          // 稳定的 id，用户的选择按它保存
-  order: 10,                // 在下拉框里的位置（默认小猫是 0）
-  title: () => t('title'),  // 本地化名称
+  id: 'cockatiel',          // stable id; the user's choice is saved under it
+  order: 10,                // position in the dropdown (the default kitten is 0)
+  title: () => t('title'),  // localized name
   description: () => t('description'),
-  Figure: ParrotFigure,     // React 组件：({ scene, compact }) => <svg>
+  Figure: ParrotFigure,     // React component: ({ scene, compact }) => <svg>
 }))
 ```
 
-完整契约（`WorkpetScene`、`WorkpetSkin`、`WorkpetService`）见 dsh-workpet 仓库的 `packages/workpet/workpet/src/client/contract.ts`，以 `dsh-workpet/contract` 发布。
+The full contract (`WorkpetScene`, `WorkpetSkin`, `WorkpetService`) is `packages/workpet/workpet/src/client/contract.ts` in the [dsh-workpet](https://github.com/lastorder/dsh-workpet) repository, published as `dsh-workpet/contract`.

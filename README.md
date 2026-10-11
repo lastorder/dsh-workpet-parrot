@@ -61,7 +61,7 @@ The Work Pet draws the rest itself, so do **not** draw any of these: the status 
 
 ## Development
 
-Prerequisite: `dsh-workpet` is installed in your profile. It provides `ctx.workpet`; without it this plugin stays inactive.
+Prerequisite: the `dsh-workpet` bundle is installed in your profile. It provides `ctx.workpet` and brings the default kitten with it; without it this plugin stays inactive.
 
 1. **Install the bundle once.** In a DeepSeek Harness session, ask the agent to run `plugin_manager` `install_bundle` with this directory's absolute path as the target (the Desktop app's `desktop` profile can only be changed this way):
 

@@ -61,7 +61,7 @@
 
 ## 开发流程
 
-前提：profile 里已经装好 `dsh-workpet`。它提供 `ctx.workpet`；没有它，本插件不会激活。
+前提：profile 里已经装好 `dsh-workpet` 组合包。它提供 `ctx.workpet`，并自带默认小猫；没有它，本插件不会激活。
 
 1. **安装一次组合包**。在 DeepSeek Harness 会话里让智能体执行 `plugin_manager` 的 `install_bundle`，target 为本目录的绝对路径（桌面应用的 `desktop` profile 只能这样装）：
 

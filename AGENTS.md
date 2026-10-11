@@ -24,6 +24,7 @@ pnpm run verify   # check + test; CI runs exactly this on Node 22, 24, 26
 
 - **No build step, ever.** `client.js` and `index.js` are published and loaded byte-for-byte as written. Do not add TypeScript, JSX, a bundler, or a `prepare`/`prepack` compile step: the point of this repository is that a pet is one editable file, and `link:` installs must work straight from a checkout.
 - **Follow the dsh-workpet contract.** Draw every `WorkpetActivity` in a 100 × 80 box; draw only the bird (the capability draws bubbles, badges, companions, and effects); keep gradient ids unique per instance (`${id}`); keep the `wpp-` CSS prefix and the `prefers-reduced-motion` rule; register inside `ctx.effect` with `inject: ['workpet', 'locale']`. When the contract in dsh-workpet changes, update this repository in the same round.
+- **README links are absolute.** npm shows `README.md` on npmjs.com, where relative links break, so links in `README.md` and `README.zh.md` point at `https://github.com/lastorder/dsh-workpet-parrot/blob/main/...`; `test/readme.test.mjs` enforces it. (This file is not published, so its links stay relative.)
 - **No runtime dependencies.** React is provided by the page. `react` / `react-dom` are dev dependencies only for the smoke test and must stay on major 18.
 - A new or changed pose gets its activity covered by the smoke test (it already iterates every activity in both normal and compact form; extend `ACTIVITIES` if the contract adds one).
 

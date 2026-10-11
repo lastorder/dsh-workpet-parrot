@@ -1,6 +1,6 @@
 # dsh-workpet-parrot
 
-[English](README.md) | 中文
+[English](https://github.com/lastorder/dsh-workpet-parrot/blob/main/README.md) | 中文
 
 给 DeepSeek Harness **工作宠物**（`dsh-workpet`）提供的玄凤鹦鹉形象。和 `dsh-workpet` 组合包装在同一个 profile 里后，到 **插件 → 工作宠物** 页面的形象下拉框里选 **玄凤鹦鹉** 即可。
 
@@ -113,7 +113,7 @@
 
 ### 发布到 npm
 
-发布流程（一次性的 Trusted Publisher 配置、打 tag、在 npm 上批准）见 [AGENTS.md](AGENTS.md)。简要步骤：改 `package.json` 的 `version` → `pnpm run verify` → 提交 `Release vX.Y.Z: …` → 推送 `vX.Y.Z` tag → GitHub Actions 把包放进 npm 待审队列 → 在 npmjs.com 批准。
+发布流程（一次性的 Trusted Publisher 配置、打 tag、在 npm 上批准）见 [AGENTS.md](https://github.com/lastorder/dsh-workpet-parrot/blob/main/AGENTS.md)。简要步骤：改 `package.json` 的 `version` → `pnpm run verify` → 提交 `Release vX.Y.Z: …` → 推送 `vX.Y.Z` tag → GitHub Actions 把包放进 npm 待审队列 → 在 npmjs.com 批准。
 
 ### 接口（供参考）
 

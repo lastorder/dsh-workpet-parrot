@@ -1,6 +1,6 @@
 # dsh-workpet-parrot
 
-English | [中文](README.zh.md)
+English | [中文](https://github.com/lastorder/dsh-workpet-parrot/blob/main/README.zh.md)
 
 A cockatiel appearance for the DeepSeek Harness **Work Pet** (`dsh-workpet`). Install it in the same profile as the `dsh-workpet` bundle, then pick **Cockatiel** in the appearance dropdown on **Plugins → Work Pet**.
 
@@ -113,7 +113,7 @@ Prerequisite: the `dsh-workpet` bundle is installed in your profile. It provides
 
 ### Publishing to npm
 
-[AGENTS.md](AGENTS.md) describes the release procedure: the one-time Trusted Publisher setup, tagging, and approving on npm. In short: bump `version` in `package.json` → `pnpm run verify` → commit `Release vX.Y.Z: …` → push the `vX.Y.Z` tag → GitHub Actions stages the package on npm → approve it on npmjs.com.
+[AGENTS.md](https://github.com/lastorder/dsh-workpet-parrot/blob/main/AGENTS.md) describes the release procedure: the one-time Trusted Publisher setup, tagging, and approving on npm. In short: bump `version` in `package.json` → `pnpm run verify` → commit `Release vX.Y.Z: …` → push the `vX.Y.Z` tag → GitHub Actions stages the package on npm → approve it on npmjs.com.
 
 ### The interface, for reference
 

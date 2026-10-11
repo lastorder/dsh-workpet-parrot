@@ -1,0 +1,67 @@
+{
+  "name": "dsh-workpet-parrot",
+  "version": "0.1.0",
+  "description": "A cockatiel appearance for the dsh-workpet capability in DeepSeek Harness.",
+  "license": "MIT",
+  "type": "module",
+  "packageManager": "pnpm@11.22.0",
+  "icon": "./icon.svg",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "icon.svg",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "check": "node --check client.js && node --check index.js",
+    "test": "node --test \"test/*.test.mjs\"",
+    "verify": "pnpm run check && pnpm run test",
+    "prepublishOnly": "pnpm run verify"
+  },
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "workpet",
+    "workpet-skin",
+    "cockatiel"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lastorder/dsh-workpet-parrot.git"
+  },
+  "homepage": "https://github.com/lastorder/dsh-workpet-parrot#readme",
+  "bugs": {
+    "url": "https://github.com/lastorder/dsh-workpet-parrot/issues"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "devDependencies": {
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": [
+        "dsh-workpet"
+      ]
+    }
+  }
+}

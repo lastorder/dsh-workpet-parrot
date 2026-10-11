@@ -1,0 +1,6 @@
+# dsh-workpet-parrot bundle layer: one row that registers the cockatiel
+# appearance into the `ctx.workpet` capability. It needs the dsh-workpet
+# bundle; without it the Client half stays inactive.
+- insert:
+    - id: dsh-workpet-parrot
+      name: dsh-workpet-parrot

@@ -1,0 +1,30 @@
+version: 2
+
+updates:
+  # GitHub Actions, grouped into one PR. softprops/action-gh-release is pinned
+  # to a commit SHA on purpose (see release.yml); Dependabot proposes the new
+  # SHA with its version comment updated.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      actions:
+        patterns:
+          - '*'
+    commit-message:
+      prefix: 'ci'
+
+  # react / react-dom are test-only dev dependencies. They must stay on the
+  # major the DeepSeek Harness page provides at runtime (18), so majors are ignored.
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    ignore:
+      - dependency-name: 'react'
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'react-dom'
+        update-types: ['version-update:semver-major']
+    commit-message:
+      prefix: 'build'

@@ -1,6 +1,6 @@
 {
   "name": "dsh-workpet-parrot",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A cockatiel appearance for the dsh-workpet capability in DeepSeek Harness.",
   "license": "MIT",
   "type": "module",

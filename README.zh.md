@@ -2,7 +2,9 @@
 
 [English](https://github.com/lastorder/dsh-workpet-parrot/blob/main/README.md) | 中文
 
-给 DeepSeek Harness **工作宠物**（`dsh-workpet`）提供的玄凤鹦鹉形象。和 `dsh-workpet` 组合包装在同一个 profile 里后，到 **插件 → 工作宠物** 页面的形象下拉框里选 **玄凤鹦鹉** 即可。
+给 DeepSeek Harness **工作宠物**（`dsh-workpet`）提供的玄凤鹦鹉形象。和 `dsh-workpet` 组合包装在同一个 profile 里，玄凤鹦鹉就会出现在屏幕上其它宠物的旁边，不用任何设置。在插件管理里关闭这个组合包，它就会离开。
+
+<p align="center"><img src="https://raw.githubusercontent.com/lastorder/dsh-workpet-parrot/main/docs/images/cockatiel-poses.png" width="800" alt="玄凤鹦鹉的全部 13 个动作"></p>
 
 本包**不需要编译，也不用 TypeScript**：DeepSeek Harness 原样加载 `client.js`。这个文件里绝大部分都是绘图代码，所以开发本包基本就是在画画。
 
@@ -86,7 +88,7 @@
    pnpm install && pnpm test   # 可选：用 React 的服务端渲染把 13 个状态都画一遍
    ```
 
-4. **看效果**：刷新 Harness 窗口，打开 **插件 → 工作宠物**，选择玄凤鹦鹉，然后切换 **预览动作**。预览可以随时显示任意状态，不用真的等会话睡着或出错。如果刷新后还是旧图，重启 DeepSeek Harness 让它重新加载文件。
+4. **看效果**：刷新 Harness 窗口，打开 **插件 → 工作宠物**，点形象卡片下方的动作按钮，玄凤鹦鹉的卡片会随时表演任意状态，不用真的等会话睡着或出错。如果刷新后还是旧图，重启 DeepSeek Harness 让它重新加载文件。
 
 ### 新增一个姿势
 
@@ -121,8 +123,8 @@
 
 ```js
 ctx.effect(() => ctx.workpet.register({
-  id: 'cockatiel',          // 稳定的 id，用户的选择按它保存
-  order: 10,                // 在下拉框里的位置（默认小猫是 0）
+  id: 'cockatiel',          // 稳定的 id，鹦鹉在屏幕上的位置按它保存
+  order: 10,                // 排列顺序：屏幕上和配置页上（默认小猫是 0）
   title: () => t('title'),  // 本地化名称
   description: () => t('description'),
   Figure: ParrotFigure,     // React 组件：({ scene, compact }) => <svg>

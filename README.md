@@ -2,7 +2,9 @@
 
 English | [中文](https://github.com/lastorder/dsh-workpet-parrot/blob/main/README.zh.md)
 
-A cockatiel appearance for the DeepSeek Harness **Work Pet** (`dsh-workpet`). Install it in the same profile as the `dsh-workpet` bundle, then pick **Cockatiel** in the appearance dropdown on **Plugins → Work Pet**.
+A cockatiel appearance for the DeepSeek Harness **Work Pet** (`dsh-workpet`). Install it in the same profile as the `dsh-workpet` bundle and the cockatiel appears on screen next to the other pets, with no setting. Switch the bundle off in the Plugin Manager to take it away again.
+
+<p align="center"><img src="https://raw.githubusercontent.com/lastorder/dsh-workpet-parrot/main/docs/images/cockatiel-poses.png" width="800" alt="The cockatiel in all thirteen activities"></p>
 
 This package has **no build step and no TypeScript**: DeepSeek Harness loads `client.js` exactly as written. Almost all of that file is drawing, so developing this package is mostly drawing.
 
@@ -86,7 +88,7 @@ Prerequisite: the `dsh-workpet` bundle is installed in your profile. It provides
    pnpm install && pnpm test   # optional: draws all 13 activities with React's server renderer
    ```
 
-4. **Look at it**: refresh the Harness window, open **Plugins → Work Pet**, choose the cockatiel, and step through **Preview activity**. The preview shows any activity on demand, so you do not have to wait for a real session to fall asleep or fail. If the page still shows the old drawing after a refresh, restart DeepSeek Harness so it reloads the file.
+4. **Look at it**: refresh the Harness window, open **Plugins → Work Pet**, and press the action buttons under the appearance cards: the cockatiel's card acts out each activity on demand, so you do not have to wait for a real session to fall asleep or fail. If the page still shows the old drawing after a refresh, restart DeepSeek Harness so it reloads the file.
 
 ### Adding a new pose
 
@@ -121,8 +123,8 @@ Registration happens in the last block of `client.js` and rarely needs changes. 
 
 ```js
 ctx.effect(() => ctx.workpet.register({
-  id: 'cockatiel',          // stable id; the user's choice is saved under it
-  order: 10,                // position in the dropdown (the default kitten is 0)
+  id: 'cockatiel',          // stable id; the bird's screen position is saved under it
+  order: 10,                // arrangement: on screen and on the page (the default kitten is 0)
   title: () => t('title'),  // localized name
   description: () => t('description'),
   Figure: ParrotFigure,     // React component: ({ scene, compact }) => <svg>
